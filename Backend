@@ -1,0 +1,584 @@
+## Library Management System 📚
+A web app for managing all the activities of a library like managing members and book transactions, built on MERN Stack
+![1](https://user-images.githubusercontent.com/73348574/205624307-6a1b18fa-5ef7-4de9-b141-9225eca62c6c.png)
+### Video Demo
+[Demo Link](https://drive.google.com/file/d/1gddUdOE41WaEyY4OWoJtDa0l6VJZTg94/view?usp=sharing)
+Show some ❤️ and 🌟 the repo to support the project
+## Index ✏️
+- [Library Management System 📚](#library-management-system-)
+  - [Video Demo](#video-demo)
+- [Index ✏️](#index-️)
+- [Features Of LCMS 🚀](#features-of-lcms-)
+- [Setup 🔥](#setup-)
+  - [Frontend Setup 🍧](#frontend-setup-)
+  - [Backend Setup 🍿](#backend-setup-)
+- [Technologies 🛠](#technologies-)
+- [Screenshots](#screenshots)
+- [References 💻](#references-)
+- [Author 📝](#author-)
+- [Connect Me On 🌍](#connect-me-on-)
+- [License 🏆](#license-)
+## Features Of LCMS 🚀
+- Admin Login and Student Login
+- Admin and Student Dashboard
+- Adding Library Members
+- Adding Books with Available Copies
+- Issue and Return Transaction tracking of a Book by the Member
+- Reserving a book for specific dates
+- Showing the Achievements, Event Gallery
+## Setup 🔥
+- Fork the Repo
+- Clone the repo to your local machine
+  `git clone <repo-url>`
+### Frontend Setup 🍧
+1. Get into the chatapp directory
+   `cd frontend`
+2. Run `yarn` to install dependencies
+3. Create a `.env` file and create variables as mentioned in the `.env.example` with the values
+4. Run `yarn start` to start the application
+### Backend Setup 🍿
+1. Get into backend directory `cd backend`
+2. Run `yarn` to install dependencies
+3. Create a MongoDB account and get the MONOGO_URL for connecting the server and the Database
+4. Create a `.env` file and create variables as mentioned in the `.env.example` with the values
+5. Run `nodemon server.js` to start the server [Should have installed nodemon globally]
+## Technologies 🛠
+- ReactJS[Hooks]
+- NodeJs
+- ExpressJs
+- MongoDB
+## Screenshots
+![1](https://user-images.githubusercontent.com/73348574/205623377-999c0de5-6796-4100-85e6-96e3e7d4fb77.png)
+![2](https://user-images.githubusercontent.com/73348574/205632416-bfcc2c19-3f70-4688-bb7e-0ccd83be3038.png)
+![3](https://user-images.githubusercontent.com/73348574/205632598-6b009820-20ec-4e9f-92bf-00af92d4f1a4.png)
+![4](https://user-images.githubusercontent.com/73348574/205632198-d99fcc8d-903d-4b60-9cec-56f8e0716290.png)
+![5](https://user-images.githubusercontent.com/73348574/205631397-2793e97e-3cc6-4b60-8ee1-ec81716b9d6d.png)
+![6](https://user-images.githubusercontent.com/73348574/205631670-5dcb6437-afb1-4aaf-87d7-b47c3b01d7b1.png)
+![7](https://user-images.githubusercontent.com/73348574/205631804-6c631b5e-8bcd-41c4-bb73-bab6ea8b78f7.png)
+![8](https://user-images.githubusercontent.com/73348574/205631977-f393ca09-aa24-42a5-9bd7-d92d471c514c.png)
+## References 💻
+- [NodeJs Documentation](https://nodejs.org/en/docs/)
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+## Author 📝
+- [@iampranavdhar](https://www.github.com/iampranavdhar)
+## Connect Me On 🌍
+[![twitter badge](https://img.shields.io/badge/twitter-Pranavdhar-0077b5?style=social&logo=twitter)](https://twitter.com/iampranavdhar)<br/>
+[![linkedin badge](https://img.shields.io/badge/linkedin-Pranavdhar-0077b5?style=social&logo=linkedin)](https://in.linkedin.com/in/sai-pranavdhar-reddy-nalamalapu-038104206)
+## License 🏆
+This repository is licensed under MIT License. Find [LICENSE](LICENSE) to know more
+‎backend/package-lock.json
+-2064
+This file was deleted.
+‎backend/routes/auth.js
++51
+-48
+Original file line number	Diff line number	Diff line change
+@@ -1,60 +1,63 @@
+import express from 'express'
+import User from '../models/User.js'
+import bcrypt from 'bcrypt'
+import express from "express";
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+
+const router = express.Router()
+const router = express.Router();
+
+/* User Registration */
+router.post("/register", async (req, res) => {
+    try {
+        /* Salting and Hashing the Password */
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(req.body.password, salt)
+        /* Create a new user */
+        const newuser = await new User({
+            userType:req.body.userType,
+            userFullName:req.body.userFullName,
+            admissionId:req.body.admissionId,
+            employeeId:req.body.employeeId,
+            age:req.body.age,
+            dob:req.body.dob,
+            gender:req.body.gender,
+            address:req.body.address,
+            mobileNumber:req.body.mobileNumber,
+            email: req.body.email,
+            password: hashedPass,
+            isAdmin:req.body.isAdmin
+        });
+        /* Save User and Return */
+        const user = await newuser.save()
+        res.status(200).json(user)
+    }
+    catch (err) {
+        console.log(err)
+    }
+})
+  try {
+    /* Salting and Hashing the Password */
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+    /* Create a new user */
+    const newuser = await new User({
+      userType: req.body.userType,
+      userFullName: req.body.userFullName,
+      admissionId: req.body.admissionId,
+      employeeId: req.body.employeeId,
+      age: req.body.age,
+      dob: req.body.dob,
+      gender: req.body.gender,
+      address: req.body.address,
+      mobileNumber: req.body.mobileNumber,
+      email: req.body.email,
+      password: hashedPass,
+      isAdmin: req.body.isAdmin,
+    });
+    /* Save User and Return */
+    const user = await newuser.save();
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+/* User Login */
+router.post("/signin", async (req, res) => {
+    try {
+        const user = req.body.admissionId ? await User.findOne({
+            admissionId: req.body.admissionId
+        }): await User.findOne({
+            employeeId:req.body.employeeId
+  try {
+    console.log(req.body, "req");
+    const user = req.body.admissionId
+      ? await User.findOne({
+          admissionId: req.body.admissionId,
+        })
+        
+        !user && res.status(404).json("User not found");
+      : await User.findOne({
+          employeeId: req.body.employeeId,
+        });
+    console.log(user, "user");
+
+        const validPass = await bcrypt.compare(req.body.password, user.password)
+        !validPass && res.status(400).json("Wrong Password")
+    !user && res.status(404).json("User not found");
+
+        res.status(200).json(user)
+    const validPass = await bcrypt.compare(req.body.password, user.password);
+    !validPass && res.status(400).json("Wrong Password");
+
+    } catch (err) {
+        console.log(err)
+    }
+})
+    res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+export default router
+export default router;
+‎backend/routes/categories.js
++23
+-26
+Original file line number	Diff line number	Diff line change
+@@ -1,30 +1,27 @@
+import express from "express"
+import BookCategory from "../models/BookCategory.js"
+import express from "express";
+import BookCategory from "../models/BookCategory.js";
+
+const router = express.Router()
+const router = express.Router();
+
+router.get("/allcategories",async (req,res)=>{
+    try{
+        const categories = await BookCategory.find({})
+        res.status(200).json(categories)
+    }
+    catch(err){
+        return res.status(504).json(err)
+    }
+})
+router.get("/allcategories", async (req, res) => {
+  try {
+    const categories = await BookCategory.find({});
+    res.status(200).json(categories);
+  } catch (err) {
+    return res.status(504).json(err);
+  }
+});
+
+router.post("/addcategory", async (req, res) => {
+  try {
+    const newcategory = await new BookCategory({
+      categoryName: req.body.categoryName,
+    });
+    const category = await newcategory.save();
+    res.status(200).json(category);
+  } catch (err) {
+    return res.status(504).json(err);
+  }
+});
+
+router.post("/addcategory",async (req,res)=>{
+    try{
+        const newcategory = await new BookCategory({
+            categoryName:req.body.categoryName,
+        })
+        const category = await newcategory.save()
+        res.status(200).json(category)
+    }
+    catch(err){
+        return res.status(504).json(err)
+    }
+})
+export default router
+export default router;
+‎backend/server.js
++33
+-33
+Original file line number	Diff line number	Diff line change
+@@ -1,47 +1,47 @@
+import express from "express"
+import mongoose from "mongoose"
+import cors from "cors"
+import dotenv from "dotenv"
+import authRoutes from "./routes/auth.js"
+import userRoutes from "./routes/users.js"
+import bookRoutes from "./routes/books.js"
+import transactionRoutes from "./routes/transactions.js"
+import categoryRoutes from "./routes/categories.js"
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import bookRoutes from "./routes/books.js";
+import transactionRoutes from "./routes/transactions.js";
+import categoryRoutes from "./routes/categories.js";
+
+/* App Config */
+dotenv.config()
+const app = express()
+const port = process.env.PORT || 5000
+dotenv.config();
+const app = express();
+const port = process.env.PORT || 4000;
+
+/* Middlewares */
+app.use(express.json())
+app.use(cors())
+app.use(express.json());
+app.use(cors());
+
+/* API Routes */
+app.use("/api/auth", authRoutes)
+app.use("/api/users", userRoutes)
+app.use("/api/books", bookRoutes)
+app.use("/api/transactions", transactionRoutes)
+app.use("/api/categories", categoryRoutes)
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/books", bookRoutes);
+app.use("/api/transactions", transactionRoutes);
+app.use("/api/categories", categoryRoutes);
+
+/* MongoDB connection */
+mongoose.connect(
+    process.env.MONGO_URL,
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    },
+    () => {
+        console.log("MONGODB CONNECTED");
+    }
+  process.env.MONGO_URL,
+  {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => {
+    console.log("MONGODB CONNECTED");
+  }
+);
+
+app.get('/', (req, res) => {
+    res.status(200).send("Welcome to LibraryApp")
+})
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome to LibraryApp");
+});
+
+/* Port Listening In */
+app.listen(port, () => {
+    console.log("Server is running in PORT 5000");
+});
+  console.log(`Server is running in PORT ${port}`);
+});
+‎backend/yarn.lock
++1333
+
+
+Large diffs are not rendered by default.
+‎frontend/package-lock.json
+-35915
+This file was deleted.
+‎frontend/package.json
++1
+-1
+
+
+Original file line number	Diff line number	Diff line change
+@@ -23,7 +23,7 @@
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+‎frontend/src/Components/PopularBooks.js
++73
+-31
+Original file line number	Diff line number	Diff line change
+@@ -1,36 +1,78 @@
+import React from 'react'
+import './PopularBooks.css'
+import React from "react";
+import "./PopularBooks.css";
+
+function PopularBooks() {
+    return (
+        <div className='popularbooks-container'>
+            <h className='popularbooks-title'>Popular Books</h>
+            <div className='popularbooks'>
+                <div className='popularbook-images'>
+                    <img className='popular-book' src='https://i2.wp.com/bookjelly.com/wp-content/uploads/2019/05/mannantech2.jpg?resize=206%2C336&ssl=1' alt=''></img>
+                    <img className='popular-book' src='https://rukminim1.flixcart.com/image/612/612/ju79hu80/book/9/5/8/kaleidoscope-original-imaffdvwyztgzufq.jpeg?q=70' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU' alt=''></img>
+                    <img className='popular-book' src='https://i1.wp.com/bookjelly.com/wp-content/uploads/2019/06/mannantech2-2.jpg?resize=204%2C307&ssl=1' alt=''></img>
+                    <img className='popular-book' src='https://i.insider.com/555b87006da811fe218b4568?width=1000&format=jpeg&auto=webp' alt=''></img>
+                    <img className='popular-book' src='https://cdn.geekwire.com/wp-content/uploads/2019/05/Screen-Shot-2019-05-23-at-7.06.40-PM.png' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU' alt=''></img>
+                    <img className='popular-book' src='https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781416544067/the-nature-of-technology-9781416544067_hr.jpg' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU' alt=''></img>
+                </div>
+                <div className='popularbook-images'>
+                    <img className='popular-book' src='https://i2.wp.com/bookjelly.com/wp-content/uploads/2019/05/mannantech2.jpg?resize=206%2C336&ssl=1' alt=''></img>
+                    <img className='popular-book' src='https://rukminim1.flixcart.com/image/612/612/ju79hu80/book/9/5/8/kaleidoscope-original-imaffdvwyztgzufq.jpeg?q=70' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU' alt=''></img>
+                    <img className='popular-book' src='https://i1.wp.com/bookjelly.com/wp-content/uploads/2019/06/mannantech2-2.jpg?resize=204%2C307&ssl=1' alt=''></img>
+                    <img className='popular-book' src='https://i.insider.com/555b87006da811fe218b4568?width=1000&format=jpeg&auto=webp' alt=''></img>
+                    <img className='popular-book' src='https://cdn.geekwire.com/wp-content/uploads/2019/05/Screen-Shot-2019-05-23-at-7.06.40-PM.png' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU' alt=''></img>
+                    <img className='popular-book' src='https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781416544067/the-nature-of-technology-9781416544067_hr.jpg' alt=''></img>
+                    <img className='popular-book' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU' alt=''></img>
+                </div>
+            </div>
+  return (
+    <div className="popularbooks-container">
+      <h className="popularbooks-title">Popular Books</h>
+      <div className="popularbooks">
+        <div className="popularbook-images">
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU"
+            alt=""
+          ></img>
+        </div>
+    )
+        <div className="popularbook-images">
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS34iIDoKVXOhKhdwsiGSLc9RJmtq_lSQDig&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfRHNwRyPkTxnMOzOvv5dOK4OS_lq4-2Yugg&usqp=CAU"
+            alt=""
+          ></img>
+          <img
+            className="popular-book"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7ElcNy_v2Ri1H3VhYjYP1MzR6zBUwFQWbOirCkaqcfOqJnbrK5ZvdZNUwEfrlmJwn7pA&usqp=CAU"
+            alt=""
+          ></img>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default PopularBooks
+export default PopularBooks;
+‎frontend/src/Pages/Allbooks.js
++56
+-44
+Original file line number	Diff line number	Diff line change
+@@ -1,49 +1,61 @@
+import React from 'react'
+import './Allbooks.css'
+import React from "react";
+import "./Allbooks.css";
+
+function Allbooks() {
+    return (
+        <div className='books-page'>
+            <div className="books">
+                <div className='book-card'>
+                    <img src='https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg' alt=''></img>
+                    <p className='bookcard-title'>The Subtle Art Of Not Giving A Fuck</p>
+                    <p className='bookcard-author'>By Pranavdhar</p>
+                    <div className="bookcard-category">
+                       <p>COMIC</p>
+                    </div>
+                    <div className="bookcard-emptybox"></div>
+                </div>
+                <div className='book-card'>
+                    <img src='https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg' alt=''></img>
+                    <p className='bookcard-title'>Wings Of Fire</p>
+                    <p className='bookcard-author'>By Pranavdhar</p>
+                    <div className="bookcard-category">
+                        <p>COMIC</p>
+                    </div>
+                    <div className="bookcard-emptybox"></div>
+                </div>
+                <div className='book-card'>
+                    <img src='https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg' alt=''></img>
+                    <p className='bookcard-title'>Book Title is about the eorjrjdjddjdjdj sjsj djns sfnskfn</p>
+                    <p className='bookcard-author'>By Pranavdhar</p>
+                    <div className="bookcard-category">
+                        <p>COMIC</p>
+                    </div>
+                    <div className="bookcard-emptybox"></div>
+                </div>
+                <div className='book-card'>
+                    <img src='https://m.media-amazon.com/images/I/41gr3r3FSWL.jpg' alt=''></img>
+                    <p className='bookcard-title'>Book Title is about the eorjrjdjddjdjdj sjsj djns sfnskfn</p>
+                    <p className='bookcard-author'>By Pranavdhar</p>
+                    <div className="bookcard-category">
+                        <p>COMIC</p>
+                    </div>
+                    <div className="bookcard-emptybox"></div>
+                </div>
+            </div>
+  return (
+    <div className="books-page">
+      <div className="books">
+        <div className="book-card">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp16xiXu1ZtTzbLy-eSwEK4Ng6cUpUZnuGbQ&usqp=CAU"
+            alt=""
+          ></img>
+          <p className="bookcard-title">Wings Of Fire</p>
+          <p className="bookcard-author">By Pranavdhar</p>
+          <div className="bookcard-category">
+            <p>Auto Biography</p>
+          </div>
+          <div className="bookcard-emptybox"></div>
+        </div>
+    )
+        <div className="book-card">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Rb2t6jA5ml7n57qdTZbAOWX1qSfsLCbaOA&usqp=CAU"
+            alt=""
+          ></img>
+          <p className="bookcard-title">The Power Of Your Subconscious Mind</p>
+          <p className="bookcard-author">By Joseph</p>
+          <div className="bookcard-category">
+            <p>Psychology</p>
+          </div>
+          <div className="bookcard-emptybox"></div>
+        </div>
+        <div className="book-card">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRFiDRQ7a-Oo-CnMmnbIMApP1Cq9B5bYx-UA&usqp=CAU"
+            alt=""
+          ></img>
+          <p className="bookcard-title">Elon Musk</p>
+          <p className="bookcard-author">By Elon</p>
+          <div className="bookcard-category">
+            <p>Auto Biography</p>
+          </div>
+          <div className="bookcard-emptybox"></div>
+        </div>
+        <div className="book-card">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Rb2t6jA5ml7n57qdTZbAOWX1qSfsLCbaOA&usqp=CAU"
+            alt=""
+          ></img>
+          <p className="bookcard-title">The Subtle Art Of Not Giving A Fuck</p>
+          <p className="bookcard-author">By Mark Manson</p>
+          <div className="bookcard-category">
+            <p>COMIC</p>
+          </div>
+          <div className="bookcard-emptybox"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Allbooks
+export default Allbooks;
+‎frontend/src/Pages/Dashboard/AdminDashboard/AdminDashboard.js
++1
+-1
+Original file line number	Diff line number	Diff line change
+@@ -50,7 +50,7 @@ function AdminDashboard() {
+                <div className={sidebar ? "dashboard-options active" : "dashboard-options"}>
+                    <div className='dashboard-logo'>
+                        <LibraryBooksIcon style={{ fontSize: 50 }} />
+                        <p className="logo-name">Pranav</p>
+                        <p className="logo-name">LCMS</p>
+                    </div>
+                    <p className={`dashboard-option ${active === "profile" ? "clicked" : ""}`} onClick={() => { setActive("profile"); setSidebar(false) }}><AccountCircleIcon className='dashboard-option-icon' /> Profile</p>
+                    <p className={`dashboard-option ${active === "addbook" ? "clicked" : ""}`} onClick={() => { setActive("addbook"); setSidebar(false) }}><BookIcon className='dashboard-option-icon' />Add Book</p>
